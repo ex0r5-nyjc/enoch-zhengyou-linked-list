@@ -107,6 +107,5 @@ class Queue(LinkedList):
 
 
 if __name__ == "__main__":
-    # Write any test code here and run it with
-    # `python adt.py`
+    # Write any test code here and run it with `python adt.py`
     pass
