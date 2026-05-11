@@ -24,8 +24,8 @@ class Node:
     """
 
     def __init__(self, data: tuple[int, int]):
-        # Replace the line below with your code
-        raise NotImplementedError
+        self.data = data
+        self.next = None
 
     def __repr__(self) -> str:
         return f'Node({self.get()})'
@@ -39,8 +39,7 @@ class Node:
         Return
             tuple[int, int]
         """
-        # Replace the line below with your code
-        raise NotImplementedError
+        return self.data
 
 
 class LinkedList:
@@ -75,8 +74,13 @@ class LinkedList:
         Return
             length of linkedlist as an integer (zero or positive)
         """
-        # Replace the line below with your code
-        raise NotImplementedError
+        # no need to check if the start is none because it tallies
+        current_node = self._head
+        counter = 0
+        while current_node != None:
+            current_node = current_node.next
+            counter += 1
+        return counter
 
     def get(self, n: int) -> tuple[int, int]:
         """Returns item at n-th node.
@@ -89,10 +93,14 @@ class LinkedList:
             item
 
         Raises
-            IndexError if n > length
+            IndexError if n >= length
         """
-        # Replace the line below with your code
-        raise NotImplementedError
+        if n >= self.length():
+            raise IndexError
+        current_node = self._head
+        for i in range(n):
+            current_node = current_node.next
+        return current_node.get()
 
     def insert(self, n: int, item: tuple[int, int]) -> None:
         """Insert item into linkedlist at position n.
@@ -107,9 +115,23 @@ class LinkedList:
         Raises
             IndexError if n > length
         """
-        # Replace the line below with your code
-        raise NotImplementedError
-
+        # n will be the index of the node in the list
+        current_node = self._head
+        # special case: if n == 0
+        if n == 0:
+            new_node = Node(item)
+            new_node.next = self._head
+            self._head = new_node
+        elif n > self.length():
+            raise IndexError
+        else:
+        # for all other cases
+            for i in range(n-1):
+                current_node = current_node.next
+            new_node = Node(item)
+            new_node.next = current_node.next
+            current_node.next = new_node
+            
     def append(self, item: tuple[int, int]) -> None:
         """Append item at the end of linkedlist.
 
@@ -120,8 +142,16 @@ class LinkedList:
         Returns
             None
         """
-        # Replace the line below with your code
-        raise NotImplementedError
+        # check if node is empty
+        # only loop if self._head is not None, if not current_node.next will raise an error
+        # finally, connect it to the node created with the item parameter
+        if self._head == None:
+            self._head = Node(item)
+        else:
+            current_node = self._head
+            while current_node.next != None:
+                current_node = current_node.next
+            current_node.next = Node(item)
 
     def delete(self, n: int) -> None:
         """Delete n-th item from linkedlist.
@@ -134,7 +164,20 @@ class LinkedList:
             IndexError if n > length
         """
         # Replace the line below with your code
-        raise NotImplementedError
+        if n > self.length():
+            raise IndexError("n must be 0 or positive")
+
+        previous_node = self._head
+        # If n == 0
+        if n == 0:
+            self._head = previous_node.next
+            # then python automatically frees previous_node
+        else:
+            for i in range(n - 1):
+                previous_node = previous_node.next
+            current_node = previous_node.next
+            previous_node.next = current_node.next
+            # then python automatically frees current_node
        
     def contains(self, item: tuple[int, int]) -> bool:
         """Checks whether an item is in the linkedlist.
@@ -148,8 +191,18 @@ class LinkedList:
             True if item is found in the linkedlist,
             otherwise False
         """
-        # Replace the line below with your code
-        raise NotImplementedError
+        # Set current node to the head
+        current_node = self._head
+        
+        while current_node != None:
+            # check if data in node equals to item
+            if current_node.get() == item:
+                return True
+            else:
+                current_node = current_node.next
+        
+        # reached the end
+        return False
 
 
 if __name__ == "__main__":
